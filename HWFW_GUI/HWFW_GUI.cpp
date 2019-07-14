@@ -186,15 +186,15 @@ int UpdateView()
   tvis.hInsertAfter = TVI_LAST;
   tvis.item.mask = TVIF_TEXT | TVIF_PARAM;
 
-  tvis.item.pszText = L"<固件文件头部>";
+  tvis.item.pszText = L"<FW File Header>";
   tvis.item.lParam = (LPARAM)TT_FILEHDR;
   htiDefault = htiLastItem = TreeView_DlgInsertItemW(hMainDlg, IDC_TV, &tvis);
 
-  tvis.item.pszText = L"<产品支持信息>";
+  tvis.item.pszText = L"<FW Model Info>";
   tvis.item.lParam = (LPARAM)TT_MODELINFO;
   htiLastItem = TreeView_DlgInsertItemW(hMainDlg, IDC_TV, &tvis);
 
-  tvis.item.pszText = L"<包含项目信息>";
+  tvis.item.pszText = L"<FW Item Info>";
   tvis.item.lParam = (LPARAM)TT_ITEMINFO;
   htiLastItem = TreeView_DlgInsertItemW(hMainDlg, IDC_TV, &tvis);
 
@@ -208,13 +208,13 @@ void OpenFirmware(LPCWSTR lpPath)
 
   if ((nResult = HWNP_OpenFirmware(lpPath)) != 0)
   {
-    SetStatus(L"打开文件失败!错误码:[%d]", nResult);
+    SetStatus(L"Failed to open file! Error code:[%d]", nResult);
     return;
   }
 
   if ((nResult = UpdateView()) != 0)
   {
-    SetStatus(L"更新视图失败!错误码:[%d]", nResult);
+    SetStatus(L"Update view failed! Error code:[%d]", nResult);
     return ;
   }
 

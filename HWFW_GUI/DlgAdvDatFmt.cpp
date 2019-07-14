@@ -227,7 +227,7 @@ static int ImportData_WHWH() {
     {
       if (ImportFromFile(wsTmp, &lpData, &dwDataSize) == FALSE)
       {
-        SetTooltip(GetDlgItem(hDlgFmt, IDC_LBL_ADF_STATUS), L"打开文件失败,错误码:[%d]!", GetLastError());
+        SetTooltip(GetDlgItem(hDlgFmt, IDC_LBL_ADF_STATUS), L"Failed to open file, error code:[%d]!", GetLastError());
         return -1;
       }
 
@@ -241,7 +241,7 @@ static int ImportData_WHWH() {
           sizeData = EndianSwap32(lpImgHdr->ih_size);
 
           if (dwDataSize < sizeof(UIMG_HDR) + sizeData) {
-            SetTooltip(GetDlgItem(hDlgFmt, IDC_LBL_ADF_STATUS), L"uImage格式数据长度不合法!");
+            SetTooltip(GetDlgItem(hDlgFmt, IDC_LBL_ADF_STATUS), L"uImage format data length is illegal \!");
             return -2;
           }
 
@@ -257,7 +257,7 @@ static int ImportData_WHWH() {
       lpMem = (LPBYTE)malloc(size);
 
       if (lpMem == NULL) {
-        SetTooltip(GetDlgItem(hDlgFmt, IDC_LBL_ADF_STATUS), L"分配内存失败!");
+        SetTooltip(GetDlgItem(hDlgFmt, IDC_LBL_ADF_STATUS), L"Failed to allocate memory!");
         return -3;
       }
 
@@ -291,7 +291,7 @@ static int ImportData_WHWH() {
       lpCurrentItem->hdrHuaWei.u32RearCRC = crc32_fast(lpCurrentItem->lpcHuaWeiData, lpCurrentItem->hdrHuaWei.u32RearSize);
       lpCurrentItem->u32TotalSize = size;
 
-      SetTooltip(GetDlgItem(hDlgFmt, IDC_LBL_ADF_STATUS), L"导入WHWH数据完成.");
+      SetTooltip(GetDlgItem(hDlgFmt, IDC_LBL_ADF_STATUS), L"Import WHWH data to complete.");
       UpdateDataView();
       return 1;
     }
@@ -323,7 +323,7 @@ static int ImportData_UIMG() {
     {
       if (ImportFromFile(wsTmp, &lpData, &dwDataSize) == FALSE)
       {
-        SetTooltip(GetDlgItem(hDlgFmt, IDC_LBL_ADF_STATUS), L"打开文件失败,错误码:[%d]!", GetLastError());
+        SetTooltip(GetDlgItem(hDlgFmt, IDC_LBL_ADF_STATUS), L"Failed to open file, error code:[%d]!", GetLastError());
         return -1;
       }
 
@@ -331,7 +331,7 @@ static int ImportData_UIMG() {
       lpMem = (LPBYTE)malloc(size);
 
       if (lpMem == NULL) {
-        SetTooltip(GetDlgItem(hDlgFmt, IDC_LBL_ADF_STATUS), L"分配内存失败!");
+        SetTooltip(GetDlgItem(hDlgFmt, IDC_LBL_ADF_STATUS), L"Failed to allocate memory!");
         return -3;
       }
 
@@ -369,7 +369,7 @@ static int ImportData_UIMG() {
       lpCurrentItem->hdrHuaWei.u32RearCRC = crc32_fast(lpCurrentItem->lpcHuaWeiData, lpCurrentItem->hdrHuaWei.u32RearSize);
       lpCurrentItem->u32TotalSize = size;
 
-      SetTooltip(GetDlgItem(hDlgFmt, IDC_LBL_ADF_STATUS), L"导入UIMG数据完成.");
+      SetTooltip(GetDlgItem(hDlgFmt, IDC_LBL_ADF_STATUS), L"Import UIMG data is completed.");
       UpdateDataView();
       return 1;
     }
@@ -471,8 +471,8 @@ static int SaveSubItem(int alignMode) {
         WCHAR szTemp[MAX_PATH];
 
         mbstowcs_s(&stOut, szTemp, CURRENT.hdrHuaWei.chItemVersion, sizeof(HW_HDR::chItemVersion));
-        wsprintf(szText, L"构造子项目出错: [%s]:[%d] !", szTemp, ret);
-        MessageBoxW(hDlgFmt, szText, L"警告", MB_OK | MB_ICONWARNING);
+        wsprintf(szText, L"Construction subproject error: [%s]:[%d] !", szTemp, ret);
+        MessageBoxW(hDlgFmt, szText, L"Warning", MB_OK | MB_ICONWARNING);
       }
       else {
         offset += ret;
@@ -489,9 +489,9 @@ static int SaveSubItem(int alignMode) {
   free(lpMem);
 
   if (result != 0)
-    SetTooltip(GetDlgItem(hDlgFmt, IDC_LBL_ADF_STATUS), L"保存WHWH数据失败,错误码:[%d]!", result);
+    SetTooltip(GetDlgItem(hDlgFmt, IDC_LBL_ADF_STATUS), L"Failed to save WHWH data, error code:[%d]!", result);
   else
-    SetTooltip(GetDlgItem(hDlgFmt, IDC_LBL_ADF_STATUS), L"保存WHWH数据完成.");
+    SetTooltip(GetDlgItem(hDlgFmt, IDC_LBL_ADF_STATUS), L"Save WHWH data completion.");
 
   return result;
 }
@@ -758,7 +758,7 @@ static INT_PTR InitDlg(HWND hDlg, uint32_t nIndex) {
   ret = HWNP_GetItemInfoByIndex(nIndex, &hwItemInfo);
 
   if (ret != 0) {
-    SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"获取项目信息失败:[%d].", ret);
+    SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"Failed to get project information:[%d].", ret);
     return TRUE;
   }
   else
@@ -768,7 +768,7 @@ static INT_PTR InitDlg(HWND hDlg, uint32_t nIndex) {
     WCHAR szPath[MAX_PATH];
 
     mbstowcs_s(&stOut, szPath, hwItemInfo.chItemPath, sizeof(HWNP_ITEMINFO::chItemPath));
-    wsprintf(szText, L"高级项目数据格式编辑 => [%s]", szPath);
+    wsprintf(szText, L"Advanced project data format editing => [%s]", szPath);
 
     SetWindowTextW(hDlg, szText);
   }
@@ -776,14 +776,14 @@ static INT_PTR InitDlg(HWND hDlg, uint32_t nIndex) {
   ret = HWNP_GetItemDataSizeByIndex(nIndex, &u32DataSize);
 
   if (ret != 0) {
-    SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"获取项目数据大小失败:[%d].", ret);
+    SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"Failed to get project data size:[%d].", ret);
     return TRUE;
   }
 
   ret = HWNP_GetItemDataPointerByIndex(nIndex, &lpItemData);
 
   if (ret != 0) {
-    SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"获取项目数据偏移失败:[%d].", ret);
+    SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"Failed to get project data offset:[%d].", ret);
     return TRUE;
   }
 
@@ -791,30 +791,30 @@ static INT_PTR InitDlg(HWND hDlg, uint32_t nIndex) {
   ret = HWNP_GetItemDataTypeByIndex(nIndex, &dwType);
 
   if (ret != 0) {
-    SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"获取项目数据类型失败:[%d].", ret);
+    SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"Failed to get project data type:[%d].", ret);
     return TRUE;
   }
 
 
   if (!(CHK_FLAGS(dwType, IDT_WHWH))) {
-    SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"项目数据类型不匹配!");
+    SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"Project data type does not match!");
     return TRUE;
   }
 
   if (u32DataSize <= sizeof(HW_HDR)) {
-    SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"项目数据长度太小!");
+    SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"Project data length is too small!");
     return TRUE;
   }
 
   if (lpItemData == NULL) {
-    SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"项目数据指针不合法!");
+    SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"Project data pointer is illegal!");
     return TRUE;
   }
 
   ret = ParseSubItem();
 
   if (ret != 0) {
-    SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"解析子项目失败:[%d]!", ret);
+    SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"Parsing subproject failed:[%d]!", ret);
     return TRUE;
   }
 
@@ -824,7 +824,7 @@ static INT_PTR InitDlg(HWND hDlg, uint32_t nIndex) {
   if (UpdateDataView() == FALSE)
   {
     Release();
-    MessageBoxW(hDlg, L"解析高级数据结构出现错误!", L"警告", MB_ICONWARNING | MB_OK);
+    MessageBoxW(hDlg, L"Parsing advanced data structure error!", L"Warning", MB_ICONWARNING | MB_OK);
     EndDialog(hDlg, 0);
     return (INT_PTR)FALSE;
   }
@@ -887,12 +887,12 @@ INT_PTR CALLBACK DlgProc_AdvDatFmt(HWND hDlg, UINT message, WPARAM wParam, LPARA
           u32CRC = crc32_fast(lpCurrentItem->lpcHuaWeiData, lpCurrentItem->hdrHuaWei.u32RearSize);
 
           if (u32CRC == lpCurrentItem->hdrHuaWei.u32RearCRC)
-            SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"WHWH数据CRC32检查正确.");
+            SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"WHWH data CRC32 check correctly.");
           else
-            SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"WHWH数据CRC32检查不正确, 计算结果:0x%08X!", u32CRC);
+            SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"WHWH data CRC32 check is incorrect, calculation result: 0x%08X!", u32CRC);
         }
         else {
-          SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"无效的子项目!");
+          SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"Invalid subproject!");
         }
 
       }
@@ -911,9 +911,9 @@ INT_PTR CALLBACK DlgProc_AdvDatFmt(HWND hDlg, UINT message, WPARAM wParam, LPARA
           u32CRC = crc32_fast(&hdrTmp, sizeof(UIMG_HDR));
 
           if (u32CRC == EndianSwap32(lpCurrentItem->hdrImage.ih_hcrc))
-            SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"UIMG头部CRC32检查正确.");
+            SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"UIMG header CRC32 check correctly.");
           else
-            SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"UIMG头部CRC32检查不正确, 计算结果:%08X (LE)!", u32CRC);
+            SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"UIMG header CRC32 check is incorrect, calculation result: %08X (LE)!", u32CRC);
         }
         break;
 
@@ -926,9 +926,9 @@ INT_PTR CALLBACK DlgProc_AdvDatFmt(HWND hDlg, UINT message, WPARAM wParam, LPARA
           u32CRC = crc32_fast(lpCurrentItem->lpcImageData, EndianSwap32(lpCurrentItem->hdrImage.ih_size));
 
           if (u32CRC == EndianSwap32(lpCurrentItem->hdrImage.ih_dcrc))
-            SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"UIMG数据CRC32检查正确.");
+            SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"UIMG data CRC32 check correctly.");
           else
-            SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"UIMG数据CRC32检查不正确, 计算结果:%08X (LE)!", u32CRC);
+            SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"UIMG data CRC32 check is incorrect, calculation result: %08X (LE)!", u32CRC);
         }
         break;
 
@@ -941,9 +941,9 @@ INT_PTR CALLBACK DlgProc_AdvDatFmt(HWND hDlg, UINT message, WPARAM wParam, LPARA
           if (GetSaveFilePath(hDlg, wsTmp, MAX_PATH))
           {
             if (ExportToFile(wsTmp, lpCurrentItem->lpcHuaWeiData, lpCurrentItem->hdrHuaWei.u32RearSize))
-              SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"导出WHWH数据完成.");
+              SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"Export WHWH data is completed.");
             else
-              SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"导出WHWH数据失败,错误码:[%d]!", GetLastError());
+              SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"Failed to export WHWH data, error code: [%d]!", GetLastError());
           }
         }
 
@@ -968,9 +968,9 @@ INT_PTR CALLBACK DlgProc_AdvDatFmt(HWND hDlg, UINT message, WPARAM wParam, LPARA
           if (GetSaveFilePath(hDlg, wsTmp, MAX_PATH))
           {
             if (ExportToFile(wsTmp, lpCurrentItem->lpcImageData, EndianSwap32(lpCurrentItem->hdrImage.ih_size)))
-              SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"导出UIMG数据完成.");
+              SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"Export UIMG data is completed.");
             else
-              SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"导出UIMG数据失败,错误码:[%d]!", GetLastError());
+              SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"Failed to export UIMG data, error code: [%d]!", GetLastError());
           }
         }
         break;
@@ -1023,13 +1023,13 @@ INT_PTR CALLBACK DlgProc_AdvDatFmt(HWND hDlg, UINT message, WPARAM wParam, LPARA
 
 
           if (!ImportFromFile(szFile, &lpData, &dwSize)) {
-            SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"导入文件数据失败!");
+            SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"Import file data failed!");
             if (lpData != NULL) free(lpData);
             break;
           }
 
           if (dwSize <= sizeof(HW_HEADER)) {
-            SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"文件大小不合法!");
+            SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"File size is illegal!");
             if (lpData != NULL) free(lpData);
             break;
           }
@@ -1037,7 +1037,7 @@ INT_PTR CALLBACK DlgProc_AdvDatFmt(HWND hDlg, UINT message, WPARAM wParam, LPARA
           lpHwHdr = (PHW_HEADER)lpData;
 
           if (lpHwHdr->u32Magic != HWNP_HWHW_MAGIC) {
-            SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"文件头魔法字不正确!");
+            SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"File header magic word is incorrect!");
             if (lpData != NULL) free(lpData);
             break;
           }
@@ -1045,7 +1045,7 @@ INT_PTR CALLBACK DlgProc_AdvDatFmt(HWND hDlg, UINT message, WPARAM wParam, LPARA
           lpNewSubItem = (PHWSUBITEM_OBJ)_recalloc(lpSubItem, nSubItem + 1, sizeof(HWSUBITEM_OBJ));
 
           if (lpNewSubItem == NULL) {
-            SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"重新分配内存失败!");
+            SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"Recalloc failed!");
             if (lpData != NULL) free(lpData);
             break;
           }
@@ -1053,7 +1053,7 @@ INT_PTR CALLBACK DlgProc_AdvDatFmt(HWND hDlg, UINT message, WPARAM wParam, LPARA
           ret = InitSubItem(&lpNewSubItem[nSubItem], lpData);
 
           if (ret < 0) {
-            SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"解析对象失败: [%d]!", ret);
+            SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"Parsing object failed: [%d]!", ret);
             if (lpData != NULL) free(lpData);
             break;
           }
@@ -1090,14 +1090,14 @@ INT_PTR CALLBACK DlgProc_AdvDatFmt(HWND hDlg, UINT message, WPARAM wParam, LPARA
             ret = MakeSubItem(lpData, lpCurrentItem->u32TotalSize, lpCurrentItem, FALSE, TRUE);
 
             if (ret < 0) {
-              SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"构造子对象失败: [%d]!", ret);
+              SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"Constructor subobject failed: [%d]!", ret);
             }
             else {
               if (ExportToFile(szFile, lpData, ret)) {
-                SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"导出子项目成功: [%s]", szFile);
+                SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"Export subproject success: [%s]", szFile);
               }
               else {
-                SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"导出子项目失败 !!!");
+                SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"Export subproject failed !!!");
               }
             }
           }
@@ -1116,7 +1116,7 @@ INT_PTR CALLBACK DlgProc_AdvDatFmt(HWND hDlg, UINT message, WPARAM wParam, LPARA
         if (lpCurrentItem == NULL) break;
 
         if (nSubItem <= 1) {
-          SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"无法继续删除子项目, 一个项目中至少包含一个子项目!");
+          SetTooltip(GetDlgItem(hDlg, IDC_LBL_ADF_STATUS), L"Unable to continue deleting subprojects, one project contains at least one subproject!");
           break;
         }
 

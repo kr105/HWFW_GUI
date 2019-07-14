@@ -22,7 +22,7 @@ INT_PTR CALLBACK    DlgProc_AdvDatFmt(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    DlgProc_EditProduct(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    DlgProc_About(HWND, UINT, WPARAM, LPARAM);
 
-#define STR_FILE_TYPE       _T("所有文件(*.*)\0*.*\0\0")
+#define STR_FILE_TYPE       _T("All files (*.*)\0*.*\0\0")
 
 enum TVI_TYPE : unsigned int
 {
